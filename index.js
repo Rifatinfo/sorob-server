@@ -1,11 +1,16 @@
+require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const port = process.env.PORT || 5000
-require('dotenv').config()
 
 const app = express()  
+app.use(cors({
+  origin: "https://sorob.org", // Allow requests only from your frontend
+  methods: ["GET", "POST", "PUT", "DELETE"], // Allow specific HTTP methods
+  allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
+  credentials: true // If using cookies, enable credentials
+}));
 app.use(express.json())  
-app.use(cors())
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
@@ -21,8 +26,8 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    await client.connect();
-    await client.db("admin").command({ ping: 1 });
+    // await client.connect();
+    // await client.db("admin").command({ ping: 1 });
 
     const julyVideos = client.db("julyVideosCollection").collection("julyVideos");
     const  martyr = client.db("martyrCollection").collection("martyr");
