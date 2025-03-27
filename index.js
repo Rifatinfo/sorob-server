@@ -25,8 +25,15 @@ async function run() {
     await client.db("admin").command({ ping: 1 });
 
     const julyVideos = client.db("julyVideosCollection").collection("julyVideos");
+    const  martyr = client.db("martyrCollection").collection("martyr");
+
    app.get('/projects/july-uprising/videos', async(req, res) => {
     const cursor = julyVideos.find();
+    const result = await cursor.toArray();
+    res.send(result)
+   })
+   app.get('/projects/july-uprising/martyr', async(req, res) => {
+    const cursor = martyr.find();
     const result = await cursor.toArray();
     res.send(result)
    })
@@ -37,6 +44,14 @@ async function run() {
     const video = await julyVideos.findOne(query);
       res.send(video)
    })
+   app.get('/projects/july-uprising/martyr/:id', async (req, res) => {
+    const id = req.params.id;
+    const query2 = { _id: new ObjectId(id) }
+    const martyrs = await martyr.findOne(query2);
+      res.send(martyrs)
+   })
+
+
 
 
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
