@@ -26,6 +26,7 @@ async function run() {
 
     const julyVideos = client.db("julyVideosCollection").collection("julyVideos");
     const  martyr = client.db("martyrCollection").collection("martyr");
+    const  storiesData = client.db("storiesCollection").collection("stories");
 
    app.get('/projects/july-uprising/videos', async(req, res) => {
     const cursor = julyVideos.find();
@@ -37,6 +38,18 @@ async function run() {
     const result = await cursor.toArray();
     res.send(result)
    })
+   app.get('/projects/july-uprising/stories', async(req, res) => {
+    const cursor = storiesData.find();
+    const result = await cursor.toArray();
+    res.send(result)
+   })
+   app.get('/projects/july-uprising/stories/:id', async(req, res) => {
+    const id = req.params.id;
+    const query3 = { _id: new ObjectId(id) }
+    const stories1 = await storiesData.findOne(query3);
+      res.send(stories1)
+   })
+
 
    app.get('/projects/july-uprising/videos/:id', async (req, res) => {
     const id = req.params.id;
